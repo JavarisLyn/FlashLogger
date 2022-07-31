@@ -1,3 +1,22 @@
 cmake_minimum_required(VERSION 3.2)
-project(FlashLogger VERSION 1.0.0 LAGNUAGES C CXX)
-add_executable(FlashLogger main.cpp)
+
+project(FlashLogger VERSION 1.0.0 LANGUAGES C CXX)
+
+#指定c++版本
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(CMAKE_CXX_COMPILER "g++")
+set(CXX_FLAGS
+-g
+-std=c++11
+-pthread
+)
+
+find_package(Threads REQUIRED)
+
+
+
+add_executable(FlashLogger src/ThreadPool/ThreadPool.cpp main.cpp)
+
+target_link_libraries(FlashLogger ${CMAKE_THREAD_LIBS_INIT})
