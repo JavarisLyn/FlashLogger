@@ -3,11 +3,12 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-07-30 16:23:13
- * @LastEditTime: 2022-07-31 16:27:12
+ * @LastEditTime: 2022-08-01 19:07:35
  */
 #include<iostream>
 #include<thread>
 #include<functional>
+#include<queue>
 #include "src/ThreadPool/ThreadPool.h"
 
 void printTime(){
@@ -25,20 +26,31 @@ void printTime(){
 //     callable(1);
 // }
 
-int func1(int a){
-    std::cout<<a<<std::endl;
-    return a;
+void func1(int i){
+    std::cout<<"i am task "<<i<<" start"<<std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+    std::cout<<"i am task "<<i<<" end"<<std::endl;
 }
 
 int main(){
-    ThreadPool tp((size_t)10);
-    for(int i = 0;i<15;i++){
+    //
+    // ThreadPool tp((size_t)10);
+    ThreadPool* tp = new ThreadPool(5);
+    // for(int i = 0;i<15;i++){
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    //     tp.addTask([](){
+    //         std::cout<<"i am task "<<i<<" start"<<std::endl;
+    //         std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+    //         std::cout<<"i am task "<<i<<" end"<<std::endl;
+    //     },i);
+    // }
+
+
+
+    for(int i = 0;i<10;i++){
         std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-        tp.addTask([&]{
-            std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-            std::cout<<"i am task "<<i<<std::endl;
-        });
+        tp->addTask(func1,i);
     }
-    tp.shutdown();
+    tp->shutdown();
     return 0;
 }
