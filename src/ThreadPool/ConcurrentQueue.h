@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-01 13:35:14
- * @LastEditTime: 2022-08-01 23:14:29
+ * @LastEditTime: 2022-08-02 10:15:48
  * @Description: A concurrent Queue implemented with mutex
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -30,7 +30,7 @@ class ConcurrentQueue{
             //     return !crt_queue.empty();
             // });
         
-            //记得用move，否则T为thread时报错
+            //记得用move，否则T为thread时报错,thread的拷贝构造函数delete
             //pop不调用析构，不释放内存
             T t = std::move(crt_queue.front());
             crt_queue.pop();

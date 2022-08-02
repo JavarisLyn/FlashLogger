@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-07-30 16:23:13
- * @LastEditTime: 2022-08-01 19:07:35
+ * @LastEditTime: 2022-08-02 10:15:00
  */
 #include<iostream>
 #include<thread>
@@ -44,8 +44,6 @@ int main(){
     //         std::cout<<"i am task "<<i<<" end"<<std::endl;
     //     },i);
     // }
-
-
 
     for(int i = 0;i<10;i++){
         std::this_thread::sleep_for(std::chrono::milliseconds(3000));

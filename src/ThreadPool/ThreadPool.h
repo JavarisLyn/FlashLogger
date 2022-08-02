@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: justin
  * @Date: 2022-07-30 17:37:06
- * @LastEditTime: 2022-08-01 20:48:16
+ * @LastEditTime: 2022-08-02 11:35:25
  * @Descripttion: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -33,27 +33,30 @@ class ThreadPool{
         //模板函数的实现，此种情况下需要放在头文件中
         template<typename _Callable, typename... _Args>
         void addTask(_Callable&& __f, _Args&&... __args){
+            std::unique_lock<std::mutex> lck(mainLock);
+            // std::cout<<"get addTask lock"<<std::endl;
             if(not this->isRunning()){
                 throw std::runtime_error("Thread pool add task error: thread pool not running");
             }else{
                 Task newtask = std::bind(std::forward<_Callable>(__f),std::forward<_Args>(__args)...);
-                std::unique_lock<std::mutex> lck(mtx);
+                
                 if(this->threadQueue.size()<maxSize){
                     //创建线程
                     //todo 下面的操作需要保证原子性
                     
                     this->taskQueue.push(newtask);
-                    std::cout<<this->taskQueue.size()<<std::endl;
-                    std::cout<<"new task pushed"<<std::endl;
+                    // std::cout<<this->taskQueue.size()<<std::endl;
+                    // std::cout<<"new task pushed"<<std::endl;
                     std::thread t(
                         //lambda表达式，直接推导类型可以省略返回值类型
                         [&](){  
-                            std::cout<<std::this_thread::get_id()<<"thread created"<<std::endl;
+                            // std::cout<<std::this_thread::get_id()<<"thread created"<<std::endl;
                             while(true){
                                 Task task;                                                     
                                 {
                                     //从任务队列过去任务的逻辑要加锁
                                     std::unique_lock<std::mutex> lck(mtx);
+                                    // std::cout<<"get execute task lock"<<std::endl;
                                     while(this->isRunning() && this->taskQueue.size()==0){
                                         cdv.wait(lck,[this](){
                                             //这里可能会发生死锁？如果触发wait返回但是锁被其他线程持有
@@ -61,11 +64,11 @@ class ThreadPool{
                                         });
                                     }
                                     if(!this->isRunning() && this->taskQueue.size()==0){
-                                        std::cout<<std::this_thread::get_id()<<"thread exit"<<std::endl;
+                                        // std::cout<<std::this_thread::get_id()<<"thread exit"<<std::endl;
                                         return;
                                     }
                                     task = this->taskQueue.pop();
-                                    std::cout<<this->taskQueue.size()<<std::endl;
+                                    // std::cout<<this->taskQueue.size()<<std::endl;
                                     // if(task){
                                     //     task();
                                     // }
@@ -73,8 +76,7 @@ class ThreadPool{
                                     // if(task){
                                     //     this->taskQueue.pop_back();
                                     //     task();
-                                    // }
-                                    
+                                    // } 
                                 }
                                 task();
                             }
@@ -82,13 +84,13 @@ class ThreadPool{
                     );
                     //这里必须是move
                     this->threadQueue.push(std::move(t));
-                    std::cout<<"new thread pushed"<<std::endl;
+                    // std::cout<<"new thread pushed"<<std::endl;
                     this->threadRunning++;
                 }else{
                     
                     //任务队列添加
                     this->taskQueue.push(newtask);
-                    std::cout<<this->taskQueue.size()<<std::endl;
+                    // std::cout<<this->taskQueue.size()<<std::endl;
                     cdv.notify_one();
                 }
             }
@@ -113,8 +115,11 @@ class ThreadPool{
         //线程队列
         ConcurrentQueue<std::thread> threadQueue;
 
-        //锁
+        //锁,该锁用于线程之间互斥等待新的task进入队列
         std::mutex mtx;
+
+        //锁,该锁用于控制shutdown和addTask两个逻辑互斥
+        std::mutex mainLock;
 
         //
         std::condition_variable cdv;

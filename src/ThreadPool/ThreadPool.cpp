@@ -2,7 +2,7 @@
  * @Version: 1.0
  * @Author: LiYangfan.justin
  * @Date: 2022-07-30 23:30:14
- * @LastEditTime: 2022-08-01 20:48:52
+ * @LastEditTime: 2022-08-02 00:13:08
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -19,7 +19,7 @@ ThreadPool::ThreadPool(size_t maxSize){
 }
 
 ThreadPool::~ThreadPool(){
-    if(this->isRunning){
+    if(this->isRunning()){
         this->shutdown();
     }
 }
@@ -29,6 +29,7 @@ bool ThreadPool::isRunning(){
 }
 
 void ThreadPool::shutdown(){
+    std::unique_lock<std::mutex> lck(mainLock);
     if(not this->isRunning()){
         throw std::runtime_error("Thread pool shutdown error: thread pool alread shutdown");
     }else{
