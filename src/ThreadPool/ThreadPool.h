@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: justin
  * @Date: 2022-07-30 17:37:06
- * @LastEditTime: 2022-08-02 11:35:25
+ * @LastEditTime: 2022-08-02 16:41:41
  * @Descripttion: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -39,7 +39,7 @@ class ThreadPool{
                 throw std::runtime_error("Thread pool add task error: thread pool not running");
             }else{
                 Task newtask = std::bind(std::forward<_Callable>(__f),std::forward<_Args>(__args)...);
-                
+                // std::cout<<this->threadQueue.size()<<"  "<<maxSize<<std::endl;
                 if(this->threadQueue.size()<maxSize){
                     //创建线程
                     //todo 下面的操作需要保证原子性
@@ -54,13 +54,15 @@ class ThreadPool{
                             while(true){
                                 Task task;                                                     
                                 {
-                                    //从任务队列过去任务的逻辑要加锁
+                                    //从任务队列获取任务的逻辑要加锁
                                     std::unique_lock<std::mutex> lck(mtx);
                                     // std::cout<<"get execute task lock"<<std::endl;
                                     while(this->isRunning() && this->taskQueue.size()==0){
                                         cdv.wait(lck,[this](){
                                             //这里可能会发生死锁？如果触发wait返回但是锁被其他线程持有
-                                            return not this->isRunning();
+                                            //正常情况下，线程池在运行，taskqueue为空，阻塞
+                                            //如果taskqueue非空或者线程池不在运行，触发停止阻塞
+                                            return not this->isRunning() || this->taskQueue.size()!=0;
                                         });
                                     }
                                     if(!this->isRunning() && this->taskQueue.size()==0){
@@ -78,16 +80,18 @@ class ThreadPool{
                                     //     task();
                                     // } 
                                 }
+                                // std::cout<<std::this_thread::get_id()<<"thread execute task"<<std::endl;
                                 task();
                             }
                         }
                     );
+                    // std::cout<<"create thread"<<t.get_id()<<std::endl;
                     //这里必须是move
                     this->threadQueue.push(std::move(t));
                     // std::cout<<"new thread pushed"<<std::endl;
                     this->threadRunning++;
                 }else{
-                    
+                    // std::cout<<"add task not create"<<std::endl;
                     //任务队列添加
                     this->taskQueue.push(newtask);
                     // std::cout<<this->taskQueue.size()<<std::endl;

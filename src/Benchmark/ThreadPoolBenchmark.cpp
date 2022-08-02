@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-02 10:53:21
- * @LastEditTime: 2022-08-02 14:39:14
+ * @LastEditTime: 2022-08-02 16:40:44
  * @copyright: Copyright (c) 2022
  */
 
@@ -16,7 +16,7 @@ using namespace std;
 using LL = long long;
 const int N = 1e8;
 const int poolSize = 4;
-const int jobNum = 1000;
+const int jobNum = 300;
 vector<future<LL>> futureVec(jobNum);
 vector<promise<LL>> promiseVec(jobNum);
 vector<LL> result(jobNum);
@@ -107,7 +107,7 @@ void threadPool(){
 
 int main(){
     // oneThread();
-    multiThread();
-    // threadPool();
+    // multiThread();
+    threadPool();
     return 0;
 }
