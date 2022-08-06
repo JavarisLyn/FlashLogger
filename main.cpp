@@ -3,13 +3,15 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-07-30 16:23:13
- * @LastEditTime: 2022-08-02 10:15:00
+ * @LastEditTime: 2022-08-06 15:29:38
  */
 #include<iostream>
 #include<thread>
 #include<functional>
 #include<queue>
+#include<cstdio>
 #include "src/ThreadPool/ThreadPool.h"
+#include "src/Logger/FileWriter.h"
 
 void printTime(){
     for(int i=0;i<10;i++){
@@ -33,22 +35,35 @@ void func1(int i){
 }
 
 int main(){
-    //
-    // ThreadPool tp((size_t)10);
-    ThreadPool* tp = new ThreadPool(5);
-    // for(int i = 0;i<15;i++){
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-    //     tp.addTask([](){
-    //         std::cout<<"i am task "<<i<<" start"<<std::endl;
-    //         std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-    //         std::cout<<"i am task "<<i<<" end"<<std::endl;
-    //     },i);
-    // }
+   
+    // ThreadPool* tp = new ThreadPool(5);
+   
 
-    for(int i = 0;i<10;i++){
-        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-        tp->addTask(func1,i);
-    }
-    tp->shutdown();
+    // for(int i = 0;i<10;i++){
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    //     tp->addTask(func1,i);
+    // }
+    // tp->shutdown();
+    // const char* name = "test.txt";
+    // FILE* fp_ = fopen(name, "w");
+    // if (fp_ == nullptr) {
+    //     // perror("NormalFileWriter open file failed: ");
+    //     // int err = ferror(fp_);
+    //     // fprintf(stderr, "NormalFileWriter open file: %s failed, errno: %s\n",
+    //     //         name, strerror(err));
+    //     abort();
+    // }
+    // char buffer_[5];
+    // setbuffer(fp_, buffer_, sizeof(buffer_));
+    // const char *_msg = "111111\n111111111111111111111111111111111111111111";
+    // int written = 0;
+    // int remain = 4;
+    // size_t n = fwrite_unlocked(_msg + written, 1, remain, fp_);
+    // // std::cout<<n;
+    // while(true){
+        
+    // }
+    FileWriter fw("log.txt");
+    fw.append("123456789",5);
     return 0;
 }
