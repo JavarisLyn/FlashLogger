@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-07-30 16:23:13
- * @LastEditTime: 2022-08-06 15:29:38
+ * @LastEditTime: 2022-08-06 16:46:13
  */
 #include<iostream>
 #include<thread>
@@ -12,7 +12,7 @@
 #include<cstdio>
 #include "src/ThreadPool/ThreadPool.h"
 #include "src/Logger/FileWriter.h"
-
+#include "src/Logger/LogFile.h"
 void printTime(){
     for(int i=0;i<10;i++){
         // auto t = std::chrono::high_resolution_clock::now();
@@ -63,7 +63,9 @@ int main(){
     // while(true){
         
     // }
-    FileWriter fw("log.txt");
-    fw.append("123456789",5);
+    LogFile lgf;
+    for(int i=0;i<100000;i++){
+        lgf.append("12345678901234567890",11);
+    }
     return 0;
 }
