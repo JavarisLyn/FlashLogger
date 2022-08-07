@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 15:53:24
- * @LastEditTime: 2022-08-06 16:39:10
+ * @LastEditTime: 2022-08-07 18:07:39
  * @copyright: Copyright (c) 2022
  */
 #ifndef _LOG_FILE_
@@ -26,6 +26,8 @@ class LogFile{
         std::unique_ptr<FileWriter> file;
         long long int maxFileSize;
         std::string baseName;
+        /* 日志文件序号，防止同一秒内rollfile导致文件名重复 */
+        int fileIdx;
 };
 
 #endif

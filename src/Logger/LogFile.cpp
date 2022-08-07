@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 15:58:53
- * @LastEditTime: 2022-08-07 15:05:34
+ * @LastEditTime: 2022-08-07 18:10:51
  * @copyright: Copyright (c) 2022
  */
 #include "LogFile.h"
@@ -15,6 +15,7 @@ LogFile::LogFile(){
     /* 如果设置的太小，可能在1s内调用日rollsize两次，但是名字却相同，就会出现错误 */
     maxFileSize = 256 * 1024 * 1024;
     baseName = "LogFile:";
+    fileIdx = 0;
     rollFile();
 }
 
@@ -36,6 +37,7 @@ void LogFile::append(const char* data, long long int length){
 void LogFile::rollFile(){
     std::string newFileName = getLogFileName(baseName);
     file = std::unique_ptr<FileWriter>(new FileWriter(newFileName));
+    fileIdx++;
 }
 
 std::string LogFile::getLogFileName(std::string &baseName){
@@ -67,6 +69,9 @@ std::string LogFile::getLogFileName(std::string &baseName){
 
     /* pid todo*/
     fileName += std::to_string(getpid());
+
+    /* 文件序号，防止文件名重复 */
+    fileName += std::to_string(fileIdx);
     
     fileName += ".log";
     return fileName;

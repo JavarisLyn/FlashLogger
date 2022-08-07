@@ -3,20 +3,21 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-07 14:14:57
- * @LastEditTime: 2022-08-07 16:14:24
+ * @LastEditTime: 2022-08-07 17:52:43
  * @copyright: Copyright (c) 2022
  */
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <cstring>
 #include "../Logger/AsynLogger.h"
 using namespace std;
 using LL = long long;
 AsynLogger asynLogger(3,3);
 void func(){
     for(int i = 0;i<20000000;i++){
-        // const char* a = "This is AsynLogger by LiYangfan.justin\n";
-        asynLogger.append("This is AsynLogger by LiYangfan.justin\n",39);
+        const char* a = "This This This This This is AsynLogger by LiYangf\n";
+        asynLogger.append(a,strlen(a));
     }
 }
 

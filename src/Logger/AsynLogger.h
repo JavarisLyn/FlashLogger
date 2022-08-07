@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-06 20:48:48
- * @LastEditTime: 2022-08-07 02:13:49
+ * @LastEditTime: 2022-08-07 17:19:22
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -77,6 +77,9 @@ class AsynLogger{
         // CountDownLatch cdlatch;
 
         std::atomic_bool running;
+
+        //用于存储日志时间，后面会移动到logging模块
+        char timeStr[32];
 };
 
 #endif

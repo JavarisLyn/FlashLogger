@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-06 21:17:11
- * @LastEditTime: 2022-08-07 16:27:26
+ * @LastEditTime: 2022-08-07 17:42:43
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -71,6 +71,13 @@ void AsynLogger::append(const char * data,size_t len){
     std::unique_lock<std::mutex> lock(mtx);
 
     if(len < cur->buffer->getAvaliable()){
+        /* 加入日志时间，后面会统一到loggin中 */
+        // time_t now = 0;
+        // time(&now);
+        // struct tm tm_time;
+        // localtime_r(&now,&tm_time);
+        // strftime(timeStr,sizeof(timeStr),"%Y-%m-%d-%H-%M-%S:",&tm_time);
+        // cur->buffer->append(timeStr,20);
         cur->buffer->append(data,len);
         return;
     }
@@ -87,6 +94,14 @@ void AsynLogger::append(const char * data,size_t len){
     }
 
     cur = head->next;
+    /* 同上 */
+    // time_t now = 0;
+    // time(&now);
+    // struct tm tm_time;
+    // localtime_r(&now,&tm_time);
+    // strftime(timeStr,sizeof(timeStr),"%Y-%m-%d-%H-%M-%S:",&tm_time);
+    // cur->buffer->append(timeStr,20);
+
     cur->buffer->append(data,len);
 
     /* 唤醒刷盘线程 */
