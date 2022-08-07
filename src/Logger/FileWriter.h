@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 14:55:29
- * @LastEditTime: 2022-08-06 17:10:42
+ * @LastEditTime: 2022-08-07 14:14:15
  * @copyright: Copyright (c) 2022
  */
 #ifndef _FILE_WRITER_
@@ -14,7 +14,7 @@
 class FileWriter{
     public:
         /* 禁止单参构造函数自动类型转换 */
-        explicit FileWriter(std::string &name);
+        explicit FileWriter(std::string name);
 
         /* 需要时virtual */
         virtual ~FileWriter();

@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-05 15:50:54
- * @LastEditTime: 2022-08-06 16:44:43
+ * @LastEditTime: 2022-08-07 14:13:53
  * @copyright: Copyright (c) 2022
  */
 
@@ -11,8 +11,9 @@
 #include "FileWriter.h"
 #include<cstdio>
 
-FileWriter::FileWriter(std::string &name){
-    file = fopen(name.c_str(), "w");
+FileWriter::FileWriter(std::string name){
+    std::string filename = "log/"+name;
+    file = fopen(filename.c_str(), "w");
     if(file==nullptr){
         perror("file open failed");
     }
