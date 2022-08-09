@@ -21,6 +21,6 @@ find_package(Threads REQUIRED)
 
 
 
-add_executable(FlashLogger src/ThreadPool/ThreadPool.cpp src/Logger/FileWriter.cpp src/Logger/LogFile.cpp src/Logger/AsynLogger.cpp src/Benchmark/AsynLoggerBenchmark.cpp)
+add_executable(FlashLogger src/ThreadPool/ThreadPool.cpp src/Logger/FileWriter.cpp src/Logger/LogFile.cpp src/Logger/AsynLogger.cpp src/Logger/Logger.cpp src/Benchmark/AsynLoggerBenchmark.cpp)
 
 target_link_libraries(FlashLogger ${CMAKE_THREAD_LIBS_INIT})

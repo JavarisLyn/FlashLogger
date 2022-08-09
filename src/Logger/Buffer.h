@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 18:31:52
- * @LastEditTime: 2022-08-07 15:31:21
+ * @LastEditTime: 2022-08-10 00:20:46
  * @copyright: Copyright (c) 2022
  */
 #ifndef _BUFFERE_NODE_
@@ -11,6 +11,10 @@
 #include <memory>
 #include <cstring>
 #include <iostream>
+
+
+/* 单行日志缓冲区，用于处理原始日志的场所，做参数替换、加时间这些操作 */
+const size_t LineLogBuffer = 1 * 1024;
 
 /* 环形链表中一个缓冲区的大小 16MB */
 const size_t NodeBufferSize = 16 * 1024 * 1024;
@@ -23,6 +27,16 @@ class Buffer{
         ~Buffer() = default;
 
         size_t getLength() const{return length;}
+
+        /* 这里不能返回const */
+        char* getCurrent(){
+            return data + length;
+        }
+
+        void addLen(size_t len){
+            length += len;
+            return;
+        }
 
         const char* getData() const{
             return data;
@@ -51,6 +65,7 @@ class Buffer{
         char data[size];
         size_t length;
 };
+
 
 
 #endif
