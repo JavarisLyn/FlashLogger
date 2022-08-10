@@ -3,17 +3,20 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 15:53:24
- * @LastEditTime: 2022-08-07 18:07:39
+ * @LastEditTime: 2022-08-10 01:11:35
  * @copyright: Copyright (c) 2022
  */
 #ifndef _LOG_FILE_
 #define _LOG_FILE_
 #include<memory>
 #include "FileWriter.h"
+#include "LogConfig.h"
+
+extern LogConfig logConfig;
 
 class LogFile{
     public:
-        LogFile();
+        LogFile(std::string baseName = logConfig.baseName,size_t rollFileSize = logConfig.rollFileSize);
 
         std::string getLogFileName(std::string &baseName);
         /* 一个文件写满了，创建新的文件 */

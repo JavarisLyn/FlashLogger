@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-08 00:55:43
- * @LastEditTime: 2022-08-09 22:34:12
+ * @LastEditTime: 2022-08-10 14:38:55
  * @copyright: Copyright (c) 2022
  */
 /*
@@ -40,9 +40,6 @@ public:
         levelNum,
     };
 
-    
-
-
     /* Logger的输出函数，如果是异步日志的话就是asynLogger.append(),也可以说stdout */
     using OutPutFunc = std::function<void(const char*,size_t)>;
 
@@ -61,10 +58,11 @@ public:
     static Logger* getInstance(); 
 
     /* Logger相关参数的设置 */
-    static void setConfig(LogConfig logConfig);
+    static void setConfig(const LogConfig &);
 
     /* 单条日志的加工处理并输出 */
     void append(const char* data,LogLevel loglevel, ...);
+
 
 private:
     /* 如果定义了带参构造函数，系统就不会自动生成无参构造了，加default就是要求生成无参构造 */
@@ -92,7 +90,26 @@ private:
 #define LOG_TRACE(data, args...)                                     \
     do{                                                             \
         Logger::getInstance()->append(data, Logger::TRACE, args);     \
-    }while(0)                                                       
-
+    }while(0)    
+#define LOG_DEBUG(data, args...)                                     \
+    do{                                                             \
+        Logger::getInstance()->append(data, Logger::DEBUG, args);     \
+    }while(0)  
+#define LOG_INFO(data, args...)                                     \
+    do{                                                             \
+        Logger::getInstance()->append(data, Logger::INFO, args);     \
+    }while(0)  
+#define LOG_WARN(data, args...)                                     \
+    do{                                                             \
+        Logger::getInstance()->append(data, Logger::WARN, args);     \
+    }while(0)  
+#define LOG_ERROR(data, args...)                                     \
+    do{                                                             \
+        Logger::getInstance()->append(data, Logger::ERROR, args);     \
+    }while(0)                                                     
+#define LOG_FATAL(data, args...)                                     \
+    do{                                                             \
+        Logger::getInstance()->append(data, Logger::FATAL, args);     \
+    }while(0)  
 
 #endif

@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-06 20:48:48
- * @LastEditTime: 2022-08-07 17:19:22
+ * @LastEditTime: 2022-08-10 01:05:07
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -10,6 +10,7 @@
 #define _ASYNLOGGER_
 #include "Buffer.h"
 #include "LogFile.h"
+#include "LogConfig.h"
 #include <vector>
 #include <condition_variable>
 #include <mutex>
@@ -18,10 +19,14 @@
 #include <memory>
 #include <assert.h>
 
+extern LogConfig logConfig;
+
 class AsynLogger{
     public:
-        AsynLogger();
-        AsynLogger(int bufferNodeListSize,int flushInterval);
+        // AsynLogger();
+        /* 这种指定值得话就不能重载构造函数了 */
+        AsynLogger(int bufferNodeListSize = logConfig.initBufferNodeListSize,
+        int flushInterval = logConfig.flushInterval);
         ~AsynLogger();
 
         /* 前端调用该接口写日志 */

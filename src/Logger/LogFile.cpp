@@ -3,18 +3,20 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 15:58:53
- * @LastEditTime: 2022-08-07 18:10:51
+ * @LastEditTime: 2022-08-10 11:23:34
  * @copyright: Copyright (c) 2022
  */
 #include "LogFile.h"
 #include <unistd.h> /* gethostname */
 #include <thread>
 #include <string>
-LogFile::LogFile(){
+LogFile::LogFile(std::string baseName,size_t rollFileSize){
     /* 单个文件最大256M */
     /* 如果设置的太小，可能在1s内调用日rollsize两次，但是名字却相同，就会出现错误 */
-    maxFileSize = 256 * 1024 * 1024;
-    baseName = "LogFile:";
+    // maxFileSize = 256 * 1024 * 1024;
+    // baseName = "LogFile:";
+    this->maxFileSize = rollFileSize;
+    this->baseName = baseName;
     fileIdx = 0;
     rollFile();
 }
