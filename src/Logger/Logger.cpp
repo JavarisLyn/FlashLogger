@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-09 17:10:57
- * @LastEditTime: 2022-08-10 14:58:37
+ * @LastEditTime: 2022-08-11 17:54:36
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -63,7 +63,7 @@ void Logger::setConfig(const LogConfig& logConfig_){
 }
 
 
-void Logger::append(const char* data,LogLevel loglevel, ...){
+void Logger::append(const char* data,LogLevel loglevel,const char * File,const char* Line, ...){
     /* 添加日志时间 */
     // Timestamp current = Timestamp::now();
     // time_t curSecond = current.getSeconds();
@@ -85,6 +85,22 @@ void Logger::append(const char* data,LogLevel loglevel, ...){
     lineBuffer.addLen(static_cast<size_t>(n));
 
     /* 添加所在的文件名和行数 */
+    while(*File!='\0'){
+        lineBuffer.append(File,1);
+        lineBuffer.addLen(1);
+        File++;
+    }
+    lineBuffer.append(" ",1);
+    lineBuffer.addLen(1);
+    while(*Line!='\0'){
+        lineBuffer.append(Line,1);
+        lineBuffer.addLen(1);
+        Line++;
+    }
+    lineBuffer.append(":",1);
+    lineBuffer.addLen(1);
+    // lineBuffer.append(File,sizeof(File));
+    // lineBuffer.addLen(sizeof(File));
 
     /* 添加日志级别 */
     lineBuffer.append(loggerLevels[loglevel],5);

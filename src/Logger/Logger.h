@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-08 00:55:43
- * @LastEditTime: 2022-08-10 14:38:55
+ * @LastEditTime: 2022-08-11 16:12:06
  * @copyright: Copyright (c) 2022
  */
 /*
@@ -24,6 +24,25 @@
 #include "Buffer.h"
 #include <mutex>
 
+/* 编译期接收字符数组并求长度 */
+// class str_util{
+
+// private:
+//     const char* t;
+//     size_t length;
+// public:
+//     template<size_t LEN>
+//     constexpr str_util(const char(&a)[LEN]){
+//         t = a;
+//         length = LEN;
+//     }
+// }
+
+/* 编译期将变量转为字符串 */
+//这一步将__LINE__转为了对应的值，第一个x是__LINE__，第二个x是值
+#define strify(x) val_(x)
+//这一步给值将上了双引号
+#define val_(x) #x
 
 class Logger{
 
@@ -61,7 +80,7 @@ public:
     static void setConfig(const LogConfig &);
 
     /* 单条日志的加工处理并输出 */
-    void append(const char* data,LogLevel loglevel, ...);
+    void append(const char* data,LogLevel loglevel,const char * File,const char * Line, ...);
 
 
 private:
@@ -87,9 +106,14 @@ private:
 /* 宏定义函数 */
 /* do...while(0)的写法是为了保证健壮性 https://www.bilibili.com/read/cv9431572/ */
 /* 主要要加有右边的反斜线，宏函数需要写在一行 */
+/* https://blog.csdn.net/nyist_zxp/article/details/107890791 */
+/* FILE和LINE可以放在编译器就得到长度这些东西 https://blog.csdn.net/u011718663/article/details/118163962 */
+/* https://www.thinbug.com/q/52852503 */
+/* 使用模板参数在编译器获得数组长度 */
+/* 数组指针 https://blog.csdn.net/weixin_41938578/article/details/107443454?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-107443454-blog-117064724.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-107443454-blog-117064724.pc_relevant_default&utm_relevant_index=3 */
 #define LOG_TRACE(data, args...)                                     \
     do{                                                             \
-        Logger::getInstance()->append(data, Logger::TRACE, args);     \
+        Logger::getInstance()->append(data, Logger::TRACE,__FILE__,strify(__LINE__), args);     \
     }while(0)    
 #define LOG_DEBUG(data, args...)                                     \
     do{                                                             \

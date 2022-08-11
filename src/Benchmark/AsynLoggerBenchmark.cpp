@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-07 14:14:57
- * @LastEditTime: 2022-08-10 11:21:24
+ * @LastEditTime: 2022-08-11 17:44:55
  * @copyright: Copyright (c) 2022
  */
 #include <iostream>
@@ -19,10 +19,10 @@ using namespace std;
 using LL = long long;
 // AsynLogger asynLogger(3,3);
 void func(){
-    for(int i = 0;i<2500000;i++){
+    for(int i = 0;i<1000000;i++){
         // const char* a = "This This This This This is AsynLogger by LiYangf\n";
         // asynLogger.append(a,strlen(a));
-        LOG_TRACE("This This This This This is AsynLogger by %s\n","liyangfan");
+        LOG_TRACE("This is AsynLogger by %s\n","liyangfan");
     }
 }
 
@@ -47,7 +47,7 @@ int main(){
     });
     asynLogger->start();
 
-    vector<thread> vec(8);
+    vector<thread> vec(1);
     auto start = chrono::high_resolution_clock::now();
     for(auto& t: vec){
         t = thread(func);
