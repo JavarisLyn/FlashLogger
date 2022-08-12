@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-08 00:55:43
- * @LastEditTime: 2022-08-11 16:12:06
+ * @LastEditTime: 2022-08-12 11:37:10
  * @copyright: Copyright (c) 2022
  */
 /*
@@ -67,8 +67,6 @@ public:
     /* 这里static是因为设置的时候还没有初始化Logger实例,具体打日志的时候才会初始化 */
     static void setOutPutFunc(OutPutFunc);
 
-
-
     static LogLevel getLogLevel();
 
     static void setLogLevel();
@@ -97,16 +95,9 @@ private:
     /* 获取单例对象时加锁 */
     static std::mutex mtx;
 
-    /* 这个变量每个线程必须是互不影响的，所以用thread_local */
-    // thread_local LineBuffer lineBuffer;
-
-
-
 };
 /* 宏定义函数 */
-/* do...while(0)的写法是为了保证健壮性 https://www.bilibili.com/read/cv9431572/ */
-/* 主要要加有右边的反斜线，宏函数需要写在一行 */
-/* https://blog.csdn.net/nyist_zxp/article/details/107890791 */
+/* do...while(0)的写法是为了保证健壮性 */
 /* FILE和LINE可以放在编译器就得到长度这些东西 https://blog.csdn.net/u011718663/article/details/118163962 */
 /* https://www.thinbug.com/q/52852503 */
 /* 使用模板参数在编译器获得数组长度 */
