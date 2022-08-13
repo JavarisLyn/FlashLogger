@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-09 17:10:57
- * @LastEditTime: 2022-08-12 11:49:17
+ * @LastEditTime: 2022-08-13 14:10:04
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -36,7 +36,7 @@ Logger* Logger::getInstance(){
     if(logger == nullptr){
         std::unique_lock<std::mutex> lock(mtx);
         if(logger == nullptr){
-            logger =  new Logger;
+            logger =  new Logger();
         }
          /* RAII 自动释放锁 */
     }
@@ -78,48 +78,48 @@ void Logger::append(const char* data,LogLevel loglevel,const char * File,const c
     // lineBuffer.append(timeStr,20);
 
     /* 添加线程号 用tls存起来*/
-    // if(currentTid == 0){
-    //     /* 系统调用，需要define */
-    //     currentTid = gettid();
-    // }
-    // int n = snprintf(lineBuffer.getCurrent(), lineBuffer.getAvaliable(), "%d ", currentTid);
-    // lineBuffer.addLen(static_cast<size_t>(n));
+    if(currentTid == 0){
+        /* 系统调用，需要define */
+        currentTid = gettid();
+    }
+    int n = snprintf(lineBuffer.getCurrent(), lineBuffer.getAvaliable(), "%d ", currentTid);
+    lineBuffer.addLen(static_cast<size_t>(n));
 
     /* 添加所在的文件名和行数 */
-    // while(*File!='\0'){
-    //     lineBuffer.append(File,1);
-    //     lineBuffer.addLen(1);
-    //     File++;
-    // }
-    // lineBuffer.append(" ",1);
-    // lineBuffer.addLen(1);
-    // while(*Line!='\0'){
-    //     lineBuffer.append(Line,1);
-    //     lineBuffer.addLen(1);
-    //     Line++;
-    // }
-    // lineBuffer.append(":",1);
-    // lineBuffer.addLen(1);
+    while(*File!='\0'){
+        lineBuffer.append(File,1);
+        lineBuffer.addLen(1);
+        File++;
+    }
+    lineBuffer.append(" ",1);
+    lineBuffer.addLen(1);
+    while(*Line!='\0'){
+        lineBuffer.append(Line,1);
+        lineBuffer.addLen(1);
+        Line++;
+    }
+    lineBuffer.append(":",1);
+    lineBuffer.addLen(1);
 
 
     /* 添加日志级别 */
-    // lineBuffer.append(loggerLevels[loglevel],5);
-    // lineBuffer.append(": ",2);
+    lineBuffer.append(loggerLevels[loglevel],5);
+    lineBuffer.append(": ",2);
 
     /* 参数替换 */
-    // /* va_list指针，接收可变参数列表 */
-    // va_list args;
-    // /* va_list执行data后面的参数开始 */
-    // va_start(args,data);
-    // /* 替换参数并写入缓冲区 */
-    // n = vsnprintf(lineBuffer.getCurrent(),lineBuffer.getAvaliable(),data,args);
-    // lineBuffer.addLen(static_cast<size_t>(n));
-    // /* 释放指针 */
-    // va_end(args);
+    /* va_list指针，接收可变参数列表 */
+    va_list args;
+    /* va_list执行Line后面的参数开始 */
+    va_start(args,data);
+    /* 替换参数并写入缓冲区 */
+    n = vsnprintf(lineBuffer.getCurrent(),lineBuffer.getAvaliable(),data,args);
+    lineBuffer.addLen(static_cast<size_t>(n));
+    /* 释放指针 */
+    va_end(args);
 
     
     if(global_outPutFunc!=nullptr){
-        global_outPutFunc(data,100);
+        global_outPutFunc(lineBuffer.getData(),lineBuffer.getLength());
     }
     lineBuffer.clear();
 }

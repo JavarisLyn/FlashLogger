@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-07 14:14:57
- * @LastEditTime: 2022-08-11 17:44:55
+ * @LastEditTime: 2022-08-13 14:55:27
  * @copyright: Copyright (c) 2022
  */
 #include <iostream>
@@ -20,32 +20,35 @@ using LL = long long;
 // AsynLogger asynLogger(3,3);
 void func(){
     for(int i = 0;i<1000000;i++){
-        // const char* a = "This This This This This is AsynLogger by LiYangf\n";
-        // asynLogger.append(a,strlen(a));
-        LOG_TRACE("This is AsynLogger by %s\n","liyangfan");
+        // const char* a = "AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogge\n";
+        //  asynLogger.append(a,100);
+        //  LOG_TRACE("This is AsynLogger by %s\n","liyangfan");
+        LOG_TRACE("AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogge%s\n","AsynLogger");
+        // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }
 
-// std::unique_ptr<AsynLogger> asynLogger(new AsynLogger());
+std::unique_ptr<AsynLogger> asynLogger;
 
-// void output(const char* data, size_t len){
-//     asynLogger->append(data,len);
-// }
+void output(const char* data, size_t len){
+    asynLogger->append(data,len);
+}
 
 int main(){
-    // asynLogger.start();
     LogConfig logConfig;
-    logConfig.flushInterval = 3;
+    logConfig.flushInterval = 10;
     logConfig.initBufferNodeListSize = 3;
     logConfig.rollFileSize = 256 * 1024 * 1024;
     Logger::setConfig(logConfig);
  
-    // Logger::setOutPutFunc(output);
-    std::unique_ptr<AsynLogger> asynLogger(new AsynLogger());
-    Logger::setOutPutFunc([&](const char* data ,size_t len){
-        asynLogger->append(data,len);
-    });
+    Logger::setOutPutFunc(output);
+    asynLogger = std::unique_ptr<AsynLogger>(new AsynLogger());
     asynLogger->start();
+    // std::unique_ptr<AsynLogger> asynLogger(new AsynLogger());
+    // Logger::setOutPutFunc([&](const char* data ,size_t len){
+    //     asynLogger->append(data,len);
+    // });
+    // asynLogger->start();
 
     vector<thread> vec(1);
     auto start = chrono::high_resolution_clock::now();

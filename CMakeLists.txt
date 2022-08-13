@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 
 project(FlashLogger VERSION 1.0.0 LANGUAGES C CXX)
 
+include (utils.cmake)
+
 set(CMAKE_BUILD_TYPE "Debug")
 
 #指定c++版本
@@ -24,3 +26,5 @@ find_package(Threads REQUIRED)
 add_executable(FlashLogger src/ThreadPool/ThreadPool.cpp src/Logger/FileWriter.cpp src/Logger/LogFile.cpp src/Logger/AsynLogger.cpp src/Logger/Logger.cpp src/Benchmark/AsynLoggerBenchmark.cpp)
 # add_executable(FlashLogger src/test.cpp)
 target_link_libraries(FlashLogger ${CMAKE_THREAD_LIBS_INIT})
+
+redefine_file_macro(FlashLogger)
