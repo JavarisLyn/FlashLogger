@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-07 14:14:57
- * @LastEditTime: 2022-08-13 14:55:27
+ * @LastEditTime: 2022-08-19 17:09:44
  * @copyright: Copyright (c) 2022
  */
 #include <iostream>
@@ -19,11 +19,11 @@ using namespace std;
 using LL = long long;
 // AsynLogger asynLogger(3,3);
 void func(){
-    for(int i = 0;i<1000000;i++){
+    for(int i = 0;i<1e6;i++){
         // const char* a = "AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogge\n";
         //  asynLogger.append(a,100);
         //  LOG_TRACE("This is AsynLogger by %s\n","liyangfan");
-        LOG_TRACE("AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogge%s\n","AsynLogger");
+        LOG_TRACE("AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogge%s\n","AsynLogger");
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }

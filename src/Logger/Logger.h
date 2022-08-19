@@ -23,6 +23,7 @@
 #include "LogConfig.h"
 #include "Buffer.h"
 #include <mutex>
+#include "../Utils/tscns.h"
 
 /* 编译期接收字符数组并求长度 */
 // class str_util{
@@ -91,6 +92,8 @@ private:
     /* 对象用的是内存栈，指针用的是内存堆 */
     /* https://blog.csdn.net/u011754972/article/details/118756049 */
     static Logger * logger;
+
+    static TSCNS tscns;
 
     /* 获取单例对象时加锁 */
     static std::mutex mtx;
