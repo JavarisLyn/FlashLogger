@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 14:55:29
- * @LastEditTime: 2022-08-07 14:14:15
+ * @LastEditTime: 2022-10-09 22:35:56
  * @copyright: Copyright (c) 2022
  */
 #ifndef _FILE_WRITER_
@@ -11,6 +11,10 @@
 
 #include<cstdio>
 #include<string>
+
+namespace FlashLogger
+{
+
 class FileWriter{
     public:
         /* 禁止单参构造函数自动类型转换 */
@@ -34,5 +38,5 @@ class FileWriter{
         long long int writtenBytes;
 };
 
-
+} // namespace FlashLogger
 #endif

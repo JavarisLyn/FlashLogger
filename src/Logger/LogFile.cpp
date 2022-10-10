@@ -3,13 +3,17 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 15:58:53
- * @LastEditTime: 2022-08-10 11:23:34
+ * @LastEditTime: 2022-10-02 17:24:23
  * @copyright: Copyright (c) 2022
  */
 #include "LogFile.h"
 #include <unistd.h> /* gethostname */
 #include <thread>
 #include <string>
+#include <iostream>
+
+using namespace FlashLogger;
+
 LogFile::LogFile(std::string baseName,size_t rollFileSize){
     /* 单个文件最大256M */
     /* 如果设置的太小，可能在1s内调用日rollsize两次，但是名字却相同，就会出现错误 */
@@ -31,12 +35,19 @@ void LogFile::append(const char* data, long long int length){
     if(file!=nullptr){
         file->append(data,length);
         if(file->getWrittenBytes()>=maxFileSize){
+            // std::cout<<"rollFile:"<<file->getWrittenBytes()<<std::endl;
             rollFile();
         }
     }
 }
 
 void LogFile::rollFile(){
+    if(file!=nullptr){
+        std::cout<<file->getWrittenBytes()<<"rollFile"<<std::endl;
+    }else{
+        std::cout<<"null"<<std::endl;
+    }
+    
     std::string newFileName = getLogFileName(baseName);
     file = std::unique_ptr<FileWriter>(new FileWriter(newFileName));
     fileIdx++;

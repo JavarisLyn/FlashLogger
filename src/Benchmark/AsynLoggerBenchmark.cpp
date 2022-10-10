@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-07 14:14:57
- * @LastEditTime: 2022-08-19 17:09:44
+ * @LastEditTime: 2022-10-02 17:31:29
  * @copyright: Copyright (c) 2022
  */
 #include <iostream>
@@ -16,6 +16,7 @@
 #include "../Logger/LogConfig.h"
 #include "stdio.h"
 using namespace std;
+using namespace FlashLogger;
 using LL = long long;
 // AsynLogger asynLogger(3,3);
 void func(){

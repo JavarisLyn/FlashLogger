@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-08 00:55:43
- * @LastEditTime: 2022-08-12 11:37:10
+ * @LastEditTime: 2022-10-09 22:36:26
  * @copyright: Copyright (c) 2022
  */
 /*
@@ -24,6 +24,9 @@
 #include "Buffer.h"
 #include <mutex>
 #include "../Utils/tscns.h"
+
+namespace FlashLogger
+{
 
 /* 编译期接收字符数组并求长度 */
 // class str_util{
@@ -107,7 +110,7 @@ private:
 /* 数组指针 https://blog.csdn.net/weixin_41938578/article/details/107443454?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-107443454-blog-117064724.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-107443454-blog-117064724.pc_relevant_default&utm_relevant_index=3 */
 #define LOG_TRACE(data, args...)                                     \
     do{                                                             \
-        Logger::getInstance()->append(data, Logger::TRACE,__FILE__,strify(__LINE__), args);     \
+        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::TRACE,__FILE__,strify(__LINE__), args);     \
     }while(0)    
 #define LOG_DEBUG(data, args...)                                     \
     do{                                                             \
@@ -130,4 +133,5 @@ private:
         Logger::getInstance()->append(data, Logger::FATAL, args);     \
     }while(0)  
 
+} // namespace FlashLogger
 #endif

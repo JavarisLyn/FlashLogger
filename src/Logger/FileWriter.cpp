@@ -12,6 +12,8 @@
 #include<cstdio>
 #include <iostream>
 
+using namespace FlashLogger;
+
 FileWriter::FileWriter(std::string name){
     std::string filename = "log/"+name;
     file = fopen(filename.c_str(), "w");

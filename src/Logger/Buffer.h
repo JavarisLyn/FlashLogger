@@ -3,7 +3,7 @@
  * @version: 
  * @Author: justin
  * @Date: 2022-08-06 18:31:52
- * @LastEditTime: 2022-08-10 00:20:46
+ * @LastEditTime: 2022-10-09 22:35:49
  * @copyright: Copyright (c) 2022
  */
 #ifndef _BUFFERE_NODE_
@@ -12,6 +12,8 @@
 #include <cstring>
 #include <iostream>
 
+namespace FlashLogger
+{
 
 /* 单行日志缓冲区，用于处理原始日志的场所，做参数替换、加时间这些操作 */
 const size_t LineLogBuffer = 1 * 1024;
@@ -53,6 +55,7 @@ class Buffer{
                 length += appendLen;
             }else{
                 /* todo */
+                std::cout<<"chck"<<std::endl;
             }
         }
 
@@ -66,6 +69,6 @@ class Buffer{
         size_t length;
 };
 
-
+} // namespace FlashLogger
 
 #endif

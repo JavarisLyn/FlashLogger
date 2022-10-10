@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: justin
  * @Date: 2022-07-30 17:37:06
- * @LastEditTime: 2022-08-02 16:41:41
+ * @LastEditTime: 2022-09-03 15:39:55
  * @Descripttion: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -32,6 +32,8 @@ class ThreadPool{
 
         //模板函数的实现，此种情况下需要放在头文件中
         template<typename _Callable, typename... _Args>
+        /* 万能引用 */
+        /* https://zhuanlan.zhihu.com/p/510193287 */
         void addTask(_Callable&& __f, _Args&&... __args){
             std::unique_lock<std::mutex> lck(mainLock);
             // std::cout<<"get addTask lock"<<std::endl;

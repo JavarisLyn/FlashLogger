@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-06 21:17:11
- * @LastEditTime: 2022-08-10 01:04:51
+ * @LastEditTime: 2022-10-02 17:24:18
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -10,6 +10,8 @@
 #include "FileWriter.h"
 #include <chrono>
 #include <iostream>
+
+using namespace FlashLogger;
 
 AsynLogger::AsynLogger(int bufferNodeListSize,int flushInterval){
     head = std::shared_ptr<BufferNode>(new BufferNode);

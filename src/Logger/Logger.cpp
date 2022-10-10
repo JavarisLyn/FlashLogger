@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-09 17:10:57
- * @LastEditTime: 2022-08-19 17:02:12
+ * @LastEditTime: 2022-10-02 18:03:12
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -13,8 +13,13 @@
 #include <unistd.h>
 #define gettid() syscall(SYS_gettid)
 
+using namespace FlashLogger;
+
 /* 全局变量 */
-LogConfig logConfig;
+ namespace FlashLogger{
+    LogConfig logConfig;
+ }
+
 
 /* 静态变量要在这里再声明一下？ */
 /* 或者不在h文件声明，直接在这里声明 */
@@ -58,7 +63,8 @@ Logger::OutPutFunc global_outPutFunc = defaultOutPutFunc;
     /* static只需要在头文件声明，不能再在cpp声明 */
 void Logger::setOutPutFunc(Logger::OutPutFunc outPutFunc){
     /* 这里为什么要用右值引用来着?outputfun不是函数指针吗 */
-    global_outPutFunc = std::move(outPutFunc);
+    //global_outPutFunc = std::move(outPutFunc);
+    global_outPutFunc = (outPutFunc);
 }
 
 void Logger::setConfig(const LogConfig& logConfig_){

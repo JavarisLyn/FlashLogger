@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-14 00:14:41
- * @LastEditTime: 2022-08-17 11:22:12
+ * @LastEditTime: 2022-10-09 23:22:27
  * @Description: time related functions benchmark
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -61,6 +61,4 @@ int main(){
     long long int duration = (end - start).count();
     cout<<"耗时"<<duration<<endl;
     
-
-
 }

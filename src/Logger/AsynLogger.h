@@ -2,7 +2,7 @@
  * @Version: 
  * @Author: LiYangfan.justin
  * @Date: 2022-08-06 20:48:48
- * @LastEditTime: 2022-08-10 01:05:07
+ * @LastEditTime: 2022-10-09 22:35:36
  * @Description: 
  * Copyright (c) 2022 by Liyangfan.justin, All Rights Reserved. 
  */
@@ -19,6 +19,10 @@
 #include <memory>
 #include <assert.h>
 
+namespace FlashLogger
+{
+
+// extern LogConfig logConfig;
 extern LogConfig logConfig;
 
 class AsynLogger{
@@ -86,5 +90,6 @@ class AsynLogger{
         //用于存储日志时间，后面会移动到logging模块
         char timeStr[32];
 };
+} // namespace FlashLogger
 
 #endif
