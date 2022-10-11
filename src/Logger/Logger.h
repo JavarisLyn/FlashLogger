@@ -76,7 +76,7 @@ public:
     static void setLogLevel();
 
     /* 获取单例对象,必须是单例,不然不能打一次日志就生成一个对象,同时用户无需手动初始化,所以必须是静态单例 */
-    static Logger* getInstance(); 
+    static std::shared_ptr<Logger> getInstance(); 
 
     /* Logger相关参数的设置 */
     static void setConfig(const LogConfig &);
@@ -84,17 +84,18 @@ public:
     /* 单条日志的加工处理并输出 */
     void append(const char* data,LogLevel loglevel,const char * File,const char * Line, ...);
 
+public:
+    ~Logger() = default;
 
 private:
     /* 如果定义了带参构造函数，系统就不会自动生成无参构造了，加default就是要求生成无参构造 */
     /* https://blog.csdn.net/weixin_42108533/article/details/125953755 */
     Logger() = default;
-    ~Logger() = default;
 
     /* 指针可以实现多态，直接用对象不行 */
     /* 对象用的是内存栈，指针用的是内存堆 */
     /* https://blog.csdn.net/u011754972/article/details/118756049 */
-    static Logger * logger;
+    static std::shared_ptr<Logger> logger;
 
     static TSCNS tscns;
 

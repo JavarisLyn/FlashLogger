@@ -1,0 +1,48 @@
+==38946== Memcheck, a memory error detector
+==38946== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==38946== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==38946== Command: ./FlashLogger
+==38946== Parent PID: 14039
+==38946== 
+==38946== Thread 2:
+==38946== Conditional jump or move depends on uninitialised value(s)
+==38946==    at 0x4143C0: FlashLogger::LogFile::append(char const*, long long) (LogFile.cpp:37)
+==38946==    by 0x415D02: FlashLogger::AsynLogger::backgroundFunc() (AsynLogger.cpp:154)
+==38946==    by 0x417656: void std::__invoke_impl<void, void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*>(std::__invoke_memfun_deref, void (FlashLogger::AsynLogger::*&&)(), FlashLogger::AsynLogger*&&) (invoke.h:73)
+==38946==    by 0x416A48: std::__invoke_result<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*>::type std::__invoke<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*>(void (FlashLogger::AsynLogger::*&&)(), FlashLogger::AsynLogger*&&) (invoke.h:95)
+==38946==    by 0x4190E6: decltype (__invoke((_S_declval<0ul>)(), (_S_declval<1ul>)())) std::thread::_Invoker<std::tuple<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*> >::_M_invoke<0ul, 1ul>(std::_Index_tuple<0ul, 1ul>) (thread:244)
+==38946==    by 0x4190A1: std::thread::_Invoker<std::tuple<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*> >::operator()() (thread:253)
+==38946==    by 0x419085: std::thread::_State_impl<std::thread::_Invoker<std::tuple<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*> > >::_M_run() (thread:196)
+==38946==    by 0x5128BA2: ??? (in /usr/lib64/libstdc++.so.6.0.25)
+==38946==    by 0x4E4E179: start_thread (in /usr/lib64/libpthread-2.28.so)
+==38946==    by 0x5A91DC2: clone (in /usr/lib64/libc-2.28.so)
+==38946== 
+==38946== 
+==38946== HEAP SUMMARY:
+==38946==     in use at exit: 1 bytes in 1 blocks
+==38946==   total heap usage: 67 allocs, 66 frees, 201,412,556 bytes allocated
+==38946== 
+==38946== Thread 1:
+==38946== 1 bytes in 1 blocks are still reachable in loss record 1 of 1
+==38946==    at 0x4C3676F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==38946==    by 0x419217: FlashLogger::Logger::getInstance() (Logger.cpp:46)
+==38946==    by 0x41A567: func() (AsynLoggerBenchmark.cpp:27)
+==38946==    by 0x41B146: void std::__invoke_impl<void, void (*)()>(std::__invoke_other, void (*&&)()) (invoke.h:60)
+==38946==    by 0x41ACC6: std::__invoke_result<void (*)()>::type std::__invoke<void (*)()>(void (*&&)()) (invoke.h:95)
+==38946==    by 0x41B86F: decltype (__invoke((_S_declval<0ul>)())) std::thread::_Invoker<std::tuple<void (*)()> >::_M_invoke<0ul>(std::_Index_tuple<0ul>) (thread:244)
+==38946==    by 0x41B845: std::thread::_Invoker<std::tuple<void (*)()> >::operator()() (thread:253)
+==38946==    by 0x41B829: std::thread::_State_impl<std::thread::_Invoker<std::tuple<void (*)()> > >::_M_run() (thread:196)
+==38946==    by 0x5128BA2: ??? (in /usr/lib64/libstdc++.so.6.0.25)
+==38946==    by 0x4E4E179: start_thread (in /usr/lib64/libpthread-2.28.so)
+==38946==    by 0x5A91DC2: clone (in /usr/lib64/libc-2.28.so)
+==38946== 
+==38946== LEAK SUMMARY:
+==38946==    definitely lost: 0 bytes in 0 blocks
+==38946==    indirectly lost: 0 bytes in 0 blocks
+==38946==      possibly lost: 0 bytes in 0 blocks
+==38946==    still reachable: 1 bytes in 1 blocks
+==38946==         suppressed: 0 bytes in 0 blocks
+==38946== 
+==38946== Use --track-origins=yes to see where uninitialised values come from
+==38946== For lists of detected and suppressed errors, rerun with: -s
+==38946== ERROR SUMMARY: 11 errors from 1 contexts (suppressed: 0 from 0)

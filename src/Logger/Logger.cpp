@@ -23,7 +23,7 @@ using namespace FlashLogger;
 
 /* 静态变量要在这里再声明一下？ */
 /* 或者不在h文件声明，直接在这里声明 */
-Logger * Logger::logger = nullptr;
+std::shared_ptr<Logger> Logger::logger = nullptr;
 TSCNS Logger::tscns;
 std::mutex Logger::mtx;
 /* 被thread_local修饰后的变量，从属于访问它的线程，线程第一次访问它时创建它且只创建一次
@@ -38,12 +38,12 @@ thread_local char timeStr[64];
 
 const char* loggerLevels[Logger::levelNum] = {"TRACE","DEGUB","INFO","WARN","ERROR","FATAL"};
 
-Logger* Logger::getInstance(){
+std::shared_ptr<Logger> Logger::getInstance(){
     /* 单例 双检锁懒汉*/
     if(logger == nullptr){
         std::unique_lock<std::mutex> lock(mtx);
         if(logger == nullptr){
-            logger =  new Logger();
+            logger =  std::shared_ptr<Logger>(new Logger());
             tscns.init();
         }
          /* RAII 自动释放锁 */

@@ -30,11 +30,17 @@ AsynLogger::~AsynLogger(){
     }
     /* 小心内存泄漏，双链表的循环引用问题，后面改成weak指针? */
     cur = head;
+    head = nullptr;
     while(cur!=nullptr){
         std::shared_ptr<BufferNode> next = cur->next;
-        cur = nullptr;
+        if(next != nullptr){
+            next->prev = nullptr;
+        }
+        // cur = nullptr;
         cur = next;
     }
+    tail = nullptr;
+    
 }
 
 void AsynLogger::start(){

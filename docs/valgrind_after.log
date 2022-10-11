@@ -1,0 +1,29 @@
+==39337== Memcheck, a memory error detector
+==39337== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==39337== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==39337== Command: ./FlashLogger
+==39337== Parent PID: 14039
+==39337== 
+==39337== Thread 2:
+==39337== Conditional jump or move depends on uninitialised value(s)
+==39337==    at 0x415680: FlashLogger::LogFile::append(char const*, long long) (LogFile.cpp:37)
+==39337==    by 0x416FC2: FlashLogger::AsynLogger::backgroundFunc() (AsynLogger.cpp:154)
+==39337==    by 0x418916: void std::__invoke_impl<void, void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*>(std::__invoke_memfun_deref, void (FlashLogger::AsynLogger::*&&)(), FlashLogger::AsynLogger*&&) (invoke.h:73)
+==39337==    by 0x417D08: std::__invoke_result<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*>::type std::__invoke<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*>(void (FlashLogger::AsynLogger::*&&)(), FlashLogger::AsynLogger*&&) (invoke.h:95)
+==39337==    by 0x41A3A6: decltype (__invoke((_S_declval<0ul>)(), (_S_declval<1ul>)())) std::thread::_Invoker<std::tuple<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*> >::_M_invoke<0ul, 1ul>(std::_Index_tuple<0ul, 1ul>) (thread:244)
+==39337==    by 0x41A361: std::thread::_Invoker<std::tuple<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*> >::operator()() (thread:253)
+==39337==    by 0x41A345: std::thread::_State_impl<std::thread::_Invoker<std::tuple<void (FlashLogger::AsynLogger::*)(), FlashLogger::AsynLogger*> > >::_M_run() (thread:196)
+==39337==    by 0x5128BA2: ??? (in /usr/lib64/libstdc++.so.6.0.25)
+==39337==    by 0x4E4E179: start_thread (in /usr/lib64/libpthread-2.28.so)
+==39337==    by 0x5A91DC2: clone (in /usr/lib64/libc-2.28.so)
+==39337== 
+==39337== 
+==39337== HEAP SUMMARY:
+==39337==     in use at exit: 0 bytes in 0 blocks
+==39337==   total heap usage: 68 allocs, 68 frees, 201,412,580 bytes allocated
+==39337== 
+==39337== All heap blocks were freed -- no leaks are possible
+==39337== 
+==39337== Use --track-origins=yes to see where uninitialised values come from
+==39337== For lists of detected and suppressed errors, rerun with: -s
+==39337== ERROR SUMMARY: 11 errors from 1 contexts (suppressed: 0 from 0)
