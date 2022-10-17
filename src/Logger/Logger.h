@@ -111,27 +111,27 @@ private:
 /* 数组指针 https://blog.csdn.net/weixin_41938578/article/details/107443454?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-107443454-blog-117064724.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-107443454-blog-117064724.pc_relevant_default&utm_relevant_index=3 */
 #define LOG_TRACE(data, args...)                                     \
     do{                                                             \
-        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::TRACE,__FILE__,strify(__LINE__), args);     \
+        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::TRACE,std::move(__FILE__),strify(__LINE__), args);     \
     }while(0)    
 #define LOG_DEBUG(data, args...)                                     \
     do{                                                             \
-        Logger::getInstance()->append(data, Logger::DEBUG, args);     \
+        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::DEBUG, std::move(__FILE__),strify(__LINE__), args);     \
     }while(0)  
 #define LOG_INFO(data, args...)                                     \
     do{                                                             \
-        Logger::getInstance()->append(data, Logger::INFO, args);     \
+        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::INFO, std::move(__FILE__),strify(__LINE__), args);     \
     }while(0)  
 #define LOG_WARN(data, args...)                                     \
     do{                                                             \
-        Logger::getInstance()->append(data, Logger::WARN, args);     \
+        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::WARN, std::move(__FILE__),strify(__LINE__), args);     \
     }while(0)  
 #define LOG_ERROR(data, args...)                                     \
     do{                                                             \
-        Logger::getInstance()->append(data, Logger::ERROR, args);     \
+        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::ERROR, std::move(__FILE__),strify(__LINE__), args);     \
     }while(0)                                                     
 #define LOG_FATAL(data, args...)                                     \
     do{                                                             \
-        Logger::getInstance()->append(data, Logger::FATAL, args);     \
+        FlashLogger::Logger::getInstance()->append(data, FlashLogger::Logger::FATAL, std::move(__FILE__),strify(__LINE__), args);     \
     }while(0)  
 
 } // namespace FlashLogger

@@ -49,20 +49,23 @@ LOG_TRACE("server start: %s","flash web server");
 ```
 
 ## 线程池效率测试
-### 
-2022-10-11 17:30:50 20bytes
-tid:5749  8bytes
-/root/lyf/FlashLogger/src/Benchmark/AsynLoggerBenchmark.cpp line:27 70bytes
-TRACE: 
-AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogger
-
-| timestamp | theadinfo | path | args substitution | effeciency(k item/s) |
-|  ----  | ----  | ----  | ----  | ----  |
-| √  | √ | √ | √ | 121 |
-| √  | √ | √ |  | 131 |
-| √  | √ |  |  | 373 |
-| √  |  |  |  | 460 |
-|   |  |  |  | 534 |
+### 1e7次写入
+| timestamp | path | theadinfo | args substitution | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
+|  ----  | ----  | ----  | ----  | ----  | ----  | ----  |
+| √  | √ | √ | √ | 122 | 210 | 244 |
+|   | √ | √ | √ | 125 | 190 | 238 |
+|   |  | √ | √ | 297 | 120 | 356 |
+|   |  |  | √ | 373 | 110 | 411 |
+|   |  |  |  | 549 | 100 | 549 |
+### 1e6次写入
+| timestamp | path | theadinfo | args substitution | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
+|  ----  | ----  | ----  | ----  | ----  | ----  | ----  |
+| √  | √ | √ | √ | 120 | 210 | 252 |
+|   | √ | √ | √ | 134 | 190 | 255 |
+|   |  | √ | √ | 265 | 120 | 318 |
+|   |  |  | √ | 353 | 110 | 388 |
+|   |  |  |  | 501 | 100 | 501 |
+- 参数替换较为耗时,后面考虑实现延迟format
 
 # Memory check
 Use Valgrind to check memory leak.

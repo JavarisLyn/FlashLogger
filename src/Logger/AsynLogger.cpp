@@ -28,7 +28,7 @@ AsynLogger::~AsynLogger(){
     if(running){
         stop();
     }
-    /* 小心内存泄漏，双链表的循环引用问题，后面改成weak指针? */
+    /* 小心内存泄漏，双链表的循环引用问题，后面改成weak指针 */
     cur = head;
     head = nullptr;
     while(cur!=nullptr){
