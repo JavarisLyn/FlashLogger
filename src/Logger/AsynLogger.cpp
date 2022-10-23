@@ -24,7 +24,7 @@ AsynLogger::AsynLogger(int bufferNodeListSize,int flushInterval){
 }
 
 AsynLogger::~AsynLogger(){
-    std::cout<<"析构"<<std::endl;
+    // std::cout<<"destructor"<<std::endl;
     if(running){
         stop();
     }
@@ -55,7 +55,7 @@ void AsynLogger::start(){
 
     running = true;
     std::cout<<"start"<<&running<<running<<std::endl;
-    /* 这种初始化方式，这里为什么要是引用类型？后面为什么要有this */
+    /* class function,remember to use `&` + this pointer */
     backgroundThread = std::thread(&AsynLogger::backgroundFunc,this);
 
 }
@@ -66,7 +66,7 @@ void AsynLogger::stop(){
     cv.notify_one();
     backgroundThread.join();
 }
-/* 这里函数的返回值BufferNode要加AsynLogger::，函数体内的可以不加 */
+
 std::shared_ptr<AsynLogger::BufferNode> AsynLogger::newBufferNode(){
     std::shared_ptr<BufferNode> bufferNodePtr = std::shared_ptr<BufferNode>(new BufferNode());
     bufferNodePtr->buffer = std::unique_ptr<LogBuffer>(new LogBuffer());

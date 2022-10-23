@@ -63,7 +63,7 @@ public:
         levelNum,
     };
 
-    /* Logger的输出函数，如果是异步日志的话就是asynLogger.append(),也可以说stdout */
+    /* Logger的输出函数，如果是异步日志的话就是asynLogger.append(),也可以是stdout */
     using OutPutFunc = std::function<void(const char*,size_t)>;
 
     using LineBuffer = Buffer<LineLogBuffer>;
@@ -88,12 +88,11 @@ public:
     ~Logger() = default;
 
 private:
-    /* 如果定义了带参构造函数，系统就不会自动生成无参构造了，加default就是要求生成无参构造 */
+    /* if constructor with args is defined,then default constructor won't 
+    be generate,`=deafault` will generate a default constructor */
     /* https://blog.csdn.net/weixin_42108533/article/details/125953755 */
     Logger() = default;
 
-    /* 指针可以实现多态，直接用对象不行 */
-    /* 对象用的是内存栈，指针用的是内存堆 */
     /* https://blog.csdn.net/u011754972/article/details/118756049 */
     static std::shared_ptr<Logger> logger;
 

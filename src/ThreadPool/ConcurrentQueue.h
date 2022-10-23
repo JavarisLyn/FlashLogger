@@ -30,13 +30,11 @@ class ConcurrentQueue{
             //     return !crt_queue.empty();
             // });
         
-            //记得用move，否则T为thread时报错,thread的拷贝构造函数delete
-            //pop不调用析构，不释放内存
+            //记得用move，否则T为thread时报错,thread的拷贝构造函数delete   
             T t = std::move(crt_queue.front());
             crt_queue.pop();
 
-            return t;
-           
+            return t;        
         }
 
         void push(T t){

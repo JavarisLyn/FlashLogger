@@ -1,10 +1,15 @@
-SET(LOGGER_SRC 
-    src/Logger/LogConfig.h 
-    src/Logger/Buffer.h 
-    src/Logger/FileWriter.cpp 
-    src/Logger/LogFile.cpp 
-    src/Logger/AsynLogger.cpp 
-    src/Logger/Logger.cpp
-    )
+SET(ThreadPool_SRC
+    ConcurrentQueue.h
+    ThreadPool.h 
+    ThreadPool.cpp 
+)
     
-ADD_LIBRARY(FlashLogger STATIC ${LOGGER_SRC})
+ADD_LIBRARY(ThreadPool STATIC ${ThreadPool_SRC})
+
+file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+INSTALL(FILES ${HEADERS} DESTINATION include/lyf/ThreadPool)
+INSTALL(TARGETS ThreadPool ThreadPool LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
+
+SET_TARGET_PROPERTIES(ThreadPool PROPERTIES  OUTPUT_NAME "ThreadPool")
+SET_TARGET_PROPERTIES(ThreadPool PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+SET_TARGET_PROPERTIES(ThreadPool PROPERTIES LINKER_LANGUAGE CXX) #packge下面没有c\cpp文件时要声明linkder language

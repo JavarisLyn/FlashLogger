@@ -28,7 +28,7 @@ extern LogConfig logConfig;
 class AsynLogger{
     public:
         // AsynLogger();
-        /* 这种指定值得话就不能重载构造函数了 */
+        /* if define a constructor with all args woit default value,then no more constructor can be overrided */
         AsynLogger(int bufferNodeListSize = logConfig.initBufferNodeListSize,
         int flushInterval = logConfig.flushInterval);
         ~AsynLogger();

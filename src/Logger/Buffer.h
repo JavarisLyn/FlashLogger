@@ -55,7 +55,7 @@ class Buffer{
                 length += appendLen;
             }else{
                 /* todo */
-                std::cout<<"chck"<<std::endl;
+                std::cout<<"check"<<std::endl;
             }
         }
 

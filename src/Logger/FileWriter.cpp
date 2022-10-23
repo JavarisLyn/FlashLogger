@@ -38,7 +38,6 @@ void FileWriter::append(const char* data,long long int length){
         long long int n = fwrite_unlocked(data + written, 1, unwritten, file);
         if(n!=unwritten){
             /* 错误处理后面完善一下 */
-            std::cout<<"wrong"<<std::endl;
             perror("fwrite_unlocked failed");
         }
         written += n;

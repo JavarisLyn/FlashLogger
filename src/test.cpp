@@ -28,9 +28,6 @@ int main(){
     cout<<typeid(__FILE__).name()<<endl;
     cout<<__FILE__<<endl;
 
-    
-    shared_ptr
-
     // cout<<typeid(__FILE__).name()<<endl;
     // cout<<sizeof(__FILE__);
 }

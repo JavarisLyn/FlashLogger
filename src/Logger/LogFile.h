@@ -28,7 +28,7 @@ class LogFile{
         void append(const char* data,long long int length);
 
     private:
-        /* 头文件memroy */
+
         std::unique_ptr<FileWriter> file;
         long long int maxFileSize;
         std::string baseName;

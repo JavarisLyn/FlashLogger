@@ -20,7 +20,7 @@ class FileWriter{
         /* 禁止单参构造函数自动类型转换 */
         explicit FileWriter(std::string name);
 
-        /* 需要时virtual */
+        /* need to be virtual */
         virtual ~FileWriter();
 
         void append(const char* data,long long int length);

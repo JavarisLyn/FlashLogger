@@ -9,7 +9,6 @@
 #ifndef _LOG_CONFIG_
 #define _LOG_CONFIG_
 #include <string>
-/* 这里考虑设置成结构体？ */
 
 namespace FlashLogger
 {

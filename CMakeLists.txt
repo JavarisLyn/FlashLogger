@@ -21,8 +21,8 @@ set(CXX_FLAGS
 
 find_package(Threads REQUIRED)
 
+add_subdirectory(src/ThreadPool)
 add_subdirectory(src/Logger) 
-# add_subdirectory(src/ThreadPool)
 add_subdirectory(src/Utils)
 
 # SET(LOGGER_SRC src/Logger/LogConfig.h src/Logger/Buffer.h src/Utils/tscns.h src/ThreadPool/ThreadPool.cpp src/Logger/FileWriter.cpp src/Logger/LogFile.cpp src/Logger/AsynLogger.cpp src/Logger/Logger.cpp src/Benchmark/AsynLoggerBenchmark.cpp)
