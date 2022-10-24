@@ -75,19 +75,12 @@ std::shared_ptr<AsynLogger::BufferNode> AsynLogger::newBufferNode(){
 
 void AsynLogger::append(const char * data,size_t len){
 
-    /* 加互斥锁 */
+    /* 加互斥锁(deleted) */
     //std::unique_lock<std::mutex> lock(mtx);
     /* 加自旋锁 */
     while(write_mtx.test_and_set(std::memory_order_acquire)){}
 
     if(len < cur->buffer->getAvaliable()){
-        /* 加入日志时间，后面会统一到loggin中 */
-        // time_t now = 0;
-        // time(&now);
-        // struct tm tm_time;
-        // localtime_r(&now,&tm_time);
-        // strftime(timeStr,sizeof(timeStr),"%Y-%m-%d-%H-%M-%S:",&tm_time);
-        // cur->buffer->append(timeStr,20);
         cur->buffer->append(data,len);
         write_mtx.clear(std::memory_order_release); //释放锁
         return;
@@ -105,13 +98,6 @@ void AsynLogger::append(const char * data,size_t len){
     }
 
     cur = head->next;
-    /* 同上 */
-    // time_t now = 0;
-    // time(&now);
-    // struct tm tm_time;
-    // localtime_r(&now,&tm_time);
-    // strftime(timeStr,sizeof(timeStr),"%Y-%m-%d-%H-%M-%S:",&tm_time);
-    // cur->buffer->append(timeStr,20);
 
     cur->buffer->append(data,len);
 

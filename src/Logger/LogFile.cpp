@@ -16,7 +16,6 @@ using namespace FlashLogger;
 
 LogFile::LogFile(std::string baseName,size_t rollFileSize){
     /* 单个文件最大256M */
-    /* 如果设置的太小，可能在1s内调用日rollsize两次，但是名字却相同，就会出现错误 */
     // maxFileSize = 256 * 1024 * 1024;
     // baseName = "LogFile:";
     this->maxFileSize = rollFileSize;

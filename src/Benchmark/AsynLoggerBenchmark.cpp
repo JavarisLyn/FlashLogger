@@ -20,7 +20,7 @@ using namespace FlashLogger;
 using LL = long long;
 // AsynLogger asynLogger(3,3);
 void func(){
-    for(int i = 0;i<1e5;i++){
+    for(int i = 0;i<2e6;i++){
         // const char* a = "AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogge\n";
         //  asynLogger.append(a,100);
         //  LOG_TRACE("This is AsynLogger by %s\n","liyangfan");
@@ -51,7 +51,7 @@ int main(){
     // });
     // asynLogger->start();
 
-    vector<thread> vec(1);
+    vector<thread> vec(5);
     auto start = chrono::high_resolution_clock::now();
     for(auto& t: vec){
         t = thread(func);

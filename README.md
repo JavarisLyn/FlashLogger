@@ -7,7 +7,7 @@ FlashLogger is a C++ 11 based log library. Support both synchronous and asynchro
 - Implement a thread-safe thread pool
 - Record timestamp in memory to avoid frequently systemcall
 - Use rdtsc to Reduce timestamp acqusition delay by rdtsc
-- Use #define\inline function\conexpr to further reduce delay
+- Use #define\inline function\constexpr to further reduce delay
 - Use smart pointer&valgrind to manage object&check memory leak
 
 # Get started
@@ -58,43 +58,45 @@ user	0m0.040s
 sys	0m1.171s
 ```
 
-## 线程池效率测试
-### 日志处理阶段耗时对比(采用互斥锁) 
-- 1e7次写入  
+## Benchmarks
+### ablation test(with mutex lock) 
+- 1e7 iterations, 5 threads
 
-| timestamp | path | theadinfo | args substitution | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
-|  ----  | ----  | ----  | ----  | ----  | ----  | ----  |
-| √  | √ | √ | √ | 122 | 210 | 244 |
-|   | √ | √ | √ | 125 | 190 | 238 |
-|   |  | √ | √ | 297 | 120 | 356 |
-|   |  |  | √ | 373 | 110 | 411 |
-|   |  |  |  | 549 | 100 | 549 |
-- 1e6次写入  
+| timestamp | path | theadinfo | args substitution | duration(ms) | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
+|  ----  | ----  | ----  | ----  | ----  | ----  | ----  | ----  |
+| √  | √ | √ | √ | 7373 | 1356 | 180 | 244 |
+|   | √ | √ | √ | 7004 | 1428 | 160 | 229 |
+| √ |  | √ | √ | 3601 | 2777 | 110 | 305 |
+| √ | √ |  | √ | 6702 | 1492 | 170 | 254 |
+| √ | √ | √ |  |  |  |  |  |
+|  |  |  |  | 1828 | 5470 | 73 | 399 |
 
-| timestamp | path | theadinfo | args substitution | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
-|  ----  | ----  | ----  | ----  | ----  | ----  | ----  |
-| √  | √ | √ | √ | 120 | 210 | 252 |
-|   | √ | √ | √ | 134 | 190 | 255 |
-|   |  | √ | √ | 265 | 120 | 318 |
-|   |  |  | √ | 353 | 110 | 388 |
-|   |  |  |  | 501 | 100 | 501 |
-- 参数替换较为耗时,后面考虑实现延迟format
-### 自旋锁与互斥锁对比
-- 1e7次写入  
+ps: format takes up a lot of time, delay format is used in nanolog.
+ 
+### spinlock & mutex lock
+- 1e7 iterations, 5 threads  
 
-|  | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
-| ----  | ----  | ----  | ----  |
-| 互斥锁 | ~~122~~ | ~~210~~ | ~~244~~ |
-| 自旋锁-单线程 | 1335 | 180 | 240 |
-| 自旋锁-5线程 | 1351 | 180 | 243 |
+- spinlock  
 
-- 1e6次写入  
+| round | duration(ms) | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
+| ----  | ----  | ----  | ----  | ----  |
+| 1 | 7320 | 1366 | 180 | 246 |
+| 2 | 7436 | 1344 | 180 | 244 |
+| 3 | 7370 | 1357 | 180 | 243 |
+| 4 | 7300 | 1370 | 180 | 247 |
+| 5 | 7440 | 1344 | 180 | 242 |
+| avg | 7373 | 1356 | 180 | 246 |
 
-|  | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
-| ----  | ----  | ----  | ----  |
-| 互斥锁 | ~~120~~ | ~~210~~ | ~~252~~ |
-| 自旋锁-单线程 | 833 | 179 | 149 |
-| 自旋锁-5线程  | 830 | 179 | 149 |
+- mutex lock  
+
+| round | duration(ms) | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
+| ----  | ----  | ----  | ----  | ----  |
+| 1 | 8465 | 1181 | 180 | 213 |
+| 2 | 8648 | 1156 | 180 | 208 |
+| 3 | 8431 | 1186 | 180 | 213 |
+| 4 | 8365 | 1195 | 180 | 215 |
+| 5 | 8499 | 1177 | 180 | 212 |
+| avg | 8482 | 1179 | 180 | 212 |
 
 # Memory check
 Use Valgrind to check memory leak.

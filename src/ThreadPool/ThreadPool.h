@@ -21,7 +21,6 @@
 class ThreadPool{
     public:
         /* using是c11新特性，代替typedef */
-        /* function<void()>是一个函数函数包装器，void()表示接收的函数没有参数,返回值void */
         using Task = std::function<void()>;
 
         ThreadPool(size_t maxSize);
@@ -30,7 +29,6 @@ class ThreadPool{
 
         bool isRunning();
 
-        //模板函数的实现，此种情况下需要放在头文件中
         template<typename _Callable, typename... _Args>
         /* 万能引用 */
         /* https://zhuanlan.zhihu.com/p/510193287 */

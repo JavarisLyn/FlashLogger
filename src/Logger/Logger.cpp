@@ -20,15 +20,12 @@ using namespace FlashLogger;
     LogConfig logConfig;
  }
 
-
-/* 静态变量要在这里再声明一下？ */
-/* 或者不在h文件声明，直接在这里声明 */
+/* 静态变量要在这里再声明一下 */
 std::shared_ptr<Logger> Logger::logger = nullptr;
 TSCNS Logger::tscns;
 std::mutex Logger::mtx;
 /* 被thread_local修饰后的变量，从属于访问它的线程，线程第一次访问它时创建它且只创建一次
-（与被static的修饰的变量是一样的，多实例共享一份），线程结束时系统释放该变量。 */
-/* 所以类似于静态变量，也要在这里声明 */
+，线程结束时系统释放该变量。 */
 thread_local Logger::LineBuffer lineBuffer;
 thread_local int currentTid;
 thread_local int64_t preSecond;
@@ -48,7 +45,7 @@ std::shared_ptr<Logger> Logger::getInstance(){
         }
          /* RAII 自动释放锁 */
     }
-    return logger;  
+    return logger;
 } 
 
 inline void defaultOutPutFunc(const char* data,size_t length){
@@ -60,9 +57,8 @@ inline void defaultOutPutFunc(const char* data,size_t length){
 
 Logger::OutPutFunc global_outPutFunc = defaultOutPutFunc;
 
-    /* static只需要在头文件声明，不能再在cpp声明 */
+
 void Logger::setOutPutFunc(Logger::OutPutFunc outPutFunc){
-    /* 这里为什么要用右值引用来着?outputfun不是函数指针吗 */
     //global_outPutFunc = std::move(outPutFunc);
     global_outPutFunc = (outPutFunc);
 }
