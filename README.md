@@ -47,9 +47,21 @@ LOG_TRACE("server start: %s","flash web server");
  Timing cached reads:   23824 MB in  2.00 seconds = 11930.43 MB/sec
  Timing buffered disk reads: 480 MB in  3.29 seconds = 145.82 MB/sec
 ```
+```
+[root@ecs-7073 log]# time dd if=/dev/zero of=/test.dbf bs=8k count=300000
+300000+0 records in
+300000+0 records out
+2457600000 bytes (2.5 GB, 2.3 GiB) copied, 6.18518 s, 397 MB/s
+
+real	0m6.186s
+user	0m0.040s
+sys	0m1.171s
+```
 
 ## 线程池效率测试
-### 1e7次写入
+### 日志处理阶段耗时对比(采用互斥锁) 
+- 1e7次写入  
+
 | timestamp | path | theadinfo | args substitution | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
 |  ----  | ----  | ----  | ----  | ----  | ----  | ----  |
 | √  | √ | √ | √ | 122 | 210 | 244 |
@@ -57,7 +69,8 @@ LOG_TRACE("server start: %s","flash web server");
 |   |  | √ | √ | 297 | 120 | 356 |
 |   |  |  | √ | 373 | 110 | 411 |
 |   |  |  |  | 549 | 100 | 549 |
-### 1e6次写入
+- 1e6次写入  
+
 | timestamp | path | theadinfo | args substitution | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
 |  ----  | ----  | ----  | ----  | ----  | ----  | ----  |
 | √  | √ | √ | √ | 120 | 210 | 252 |
@@ -66,6 +79,22 @@ LOG_TRACE("server start: %s","flash web server");
 |   |  |  | √ | 353 | 110 | 388 |
 |   |  |  |  | 501 | 100 | 501 |
 - 参数替换较为耗时,后面考虑实现延迟format
+### 自旋锁与互斥锁对比
+- 1e7次写入  
+
+|  | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
+| ----  | ----  | ----  | ----  |
+| 互斥锁 | ~~122~~ | ~~210~~ | ~~244~~ |
+| 自旋锁-单线程 | 1335 | 180 | 240 |
+| 自旋锁-5线程 | 1351 | 180 | 243 |
+
+- 1e6次写入  
+
+|  | effeciency(k item/s) | size(bytes/item) | effeciency(Mb/s) 
+| ----  | ----  | ----  | ----  |
+| 互斥锁 | ~~120~~ | ~~210~~ | ~~252~~ |
+| 自旋锁-单线程 | 833 | 179 | 149 |
+| 自旋锁-5线程  | 830 | 179 | 149 |
 
 # Memory check
 Use Valgrind to check memory leak.

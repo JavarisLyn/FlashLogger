@@ -80,7 +80,8 @@ class AsynLogger{
         int flushInterval;
 
         /* 锁相关 */
-        std::mutex mtx;
+        std::atomic_flag  write_mtx;
+        std::mutex flush_mtx;
         std::condition_variable cv;
         /* 真的需要这个吗？初始化为什么要放到后台线程而不是start */
         // CountDownLatch cdlatch;

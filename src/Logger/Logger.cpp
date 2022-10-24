@@ -74,7 +74,6 @@ void Logger::setConfig(const LogConfig& logConfig_){
 
 void Logger::append(const char* data,LogLevel loglevel,const char * File,const char* Line, ...){
     /* 添加日志时间 */
-    
     int64_t currentSecond = tscns.rdns()/1000000000;
     if(currentSecond!=preSecond){
         preSecond = currentSecond;

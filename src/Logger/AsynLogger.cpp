@@ -13,7 +13,7 @@
 
 using namespace FlashLogger;
 
-AsynLogger::AsynLogger(int bufferNodeListSize,int flushInterval){
+AsynLogger::AsynLogger(int bufferNodeListSize,int flushInterval):write_mtx(ATOMIC_FLAG_INIT){
     head = std::shared_ptr<BufferNode>(new BufferNode);
     tail = std::shared_ptr<BufferNode>(new BufferNode);
     head->next = tail;
@@ -75,8 +75,10 @@ std::shared_ptr<AsynLogger::BufferNode> AsynLogger::newBufferNode(){
 
 void AsynLogger::append(const char * data,size_t len){
 
-    /* 加锁 */
-    std::unique_lock<std::mutex> lock(mtx);
+    /* 加互斥锁 */
+    //std::unique_lock<std::mutex> lock(mtx);
+    /* 加自旋锁 */
+    while(write_mtx.test_and_set(std::memory_order_acquire)){}
 
     if(len < cur->buffer->getAvaliable()){
         /* 加入日志时间，后面会统一到loggin中 */
@@ -87,6 +89,7 @@ void AsynLogger::append(const char * data,size_t len){
         // strftime(timeStr,sizeof(timeStr),"%Y-%m-%d-%H-%M-%S:",&tm_time);
         // cur->buffer->append(timeStr,20);
         cur->buffer->append(data,len);
+        write_mtx.clear(std::memory_order_release); //释放锁
         return;
     }
     
@@ -114,6 +117,8 @@ void AsynLogger::append(const char * data,size_t len){
 
     /* 唤醒刷盘线程 */
     cv.notify_one();
+
+    write_mtx.clear(std::memory_order_release); //释放自旋锁
 }
 
 /* 后台刷盘线程 */
@@ -126,7 +131,7 @@ void AsynLogger::backgroundFunc(){
     while(running){
         /* 定期检查刷盘队列 */
         {
-            std::unique_lock<std::mutex> lock(mtx);
+            std::unique_lock<std::mutex> lock(flush_mtx);
             if(toWriteBufferNodeList.empty()){
                 /* 阻塞flushInterval后刷盘 */
                 cv.wait_for(lock, std::chrono::seconds(flushInterval));
@@ -134,19 +139,22 @@ void AsynLogger::backgroundFunc(){
             if(toWriteBufferNodeList.empty() && cur->buffer->getLength()==0){
                 continue;
             }
+
+            //争夺自旋锁
+            while(write_mtx.test_and_set(std::memory_order_acquire)){}
             /* 每次刷盘是也顺便把当前buffer刷了，也可以考虑不刷当前节点 */
-            if(cur->buffer->getLength()!=0){
-                toWriteBufferNodeList.push_back(cur);
-                removeHead();
-                bufferNodeListSize-=1;
-            }
+            // if(cur->buffer->getLength()!=0){
+            //     toWriteBufferNodeList.push_back(cur);
+            //     removeHead();
+            //     bufferNodeListSize-=1;
+            // }
             if(bufferNodeListSize<=0){
                 std::shared_ptr<BufferNode> bufferNode = AsynLogger::newBufferNode();
                 addTail(bufferNode);
                 bufferNodeListSize+=1;
             }
             cur = head->next;
-            
+            write_mtx.clear(std::memory_order_release); //释放锁
         }
         // std::cout<<"刷盘:"<<toWriteBufferNodeList.size()<<std::endl;
         /* 刷盘 */
@@ -155,20 +163,22 @@ void AsynLogger::backgroundFunc(){
         }
 
         logFileWriter.flush();
-
         {
             /* 这里其实可以两个队列用两把锁 */
-            std::unique_lock<std::mutex> lock(mtx);
+            std::unique_lock<std::mutex> lock(flush_mtx);
+            //争夺自旋锁
+            while(write_mtx.test_and_set(std::memory_order_acquire)){}
             for(auto& bufferNode :toWriteBufferNodeList){
                 bufferNode->buffer->clear();
                 addTail(bufferNode);
                 bufferNodeListSize += 1;
             }
             toWriteBufferNodeList.clear();
-
+            write_mtx.clear(std::memory_order_release); //释放锁
         }
     }
-    /* 最后退出前也要刷盘 */
+    /* 最后退出前也要刷盘,需要把缓冲区中的也刷掉 */
+    logFileWriter.append(cur->buffer->getData(),cur->buffer->getLength());
     logFileWriter.flush();
 }
 

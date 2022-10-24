@@ -11,6 +11,7 @@
 #include <memory>
 #include <cstring>
 #include <iostream>
+#include <atomic>
 
 namespace FlashLogger
 {
@@ -36,6 +37,7 @@ class Buffer{
         }
 
         void addLen(size_t len){
+            // length.fetch_add(len);
             length += len;
             return;
         }
@@ -50,19 +52,24 @@ class Buffer{
         }
 
         void append(const char* appendData,size_t appendLen){
-            if(getAvaliable()>appendLen){
-                memcpy(data+length,appendData,appendLen);
-                length += appendLen;
-            }else{
-                /* todo */
-                std::cout<<"check"<<std::endl;
-            }
+            // size_t start = length.fetch_add(appendLen);
+            memcpy(data+length,appendData,appendLen);
+            length += appendLen;
+            // if(getAvaliable()>appendLen){
+            //     memcpy(data+length,appendData,appendLen);
+            //     length += appendLen;
+            // }else{
+            //     /* todo */
+            //     std::cout<<"check"<<std::endl;
+            // }
         }
 
         void clear(){
             length = 0;
             /* 还需要memcpy清零吗？ */
         }
+
+        // std::atomic<size_t> length;
         
     private:
         char data[size];

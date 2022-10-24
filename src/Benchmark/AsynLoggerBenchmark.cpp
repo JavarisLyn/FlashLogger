@@ -20,7 +20,7 @@ using namespace FlashLogger;
 using LL = long long;
 // AsynLogger asynLogger(3,3);
 void func(){
-    for(int i = 0;i<1e6;i++){
+    for(int i = 0;i<1e5;i++){
         // const char* a = "AsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLoggerAsynLogge\n";
         //  asynLogger.append(a,100);
         //  LOG_TRACE("This is AsynLogger by %s\n","liyangfan");
@@ -38,8 +38,8 @@ void output(const char* data, size_t len){
 int main(){
     LogConfig logConfig;
     logConfig.flushInterval = 10;
-    logConfig.initBufferNodeListSize = 3;
-    logConfig.rollFileSize = 256 * 1024 * 1024;
+    logConfig.initBufferNodeListSize = 5;
+    logConfig.rollFileSize = 512 * 1024 * 1024;
     Logger::setConfig(logConfig);
  
     Logger::setOutPutFunc(output);
